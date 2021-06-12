@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "string.h"
+#include <string.h>
+#include <time.h>
 
 
 unsigned long long fac(unsigned long long n)
@@ -89,9 +90,14 @@ unsigned long long ranking(char string[5000])
 
 int main()
 {
-    char string[5000];
+    clock_t begin = clock();
+    char string[500000];
 
     printf("Please enter the string. \n");
     scanf("%s", string);
-    printf("Rank of your word is %llu", ranking(string));
+    printf("Rank of your word is %llu\n", ranking(string));
+
+    clock_t end = clock();
+    double time_sp = (double)(end - begin);
+    printf("For a %llu index array program has been executed in %lf miliseconds.",strlen(string), time_sp);
 }
