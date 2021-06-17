@@ -39,54 +39,39 @@ unsigned long long greater_than(char *string, unsigned long long n, unsigned lon
     return count;
 }
 
-void determining_repetition(unsigned long long *repetition, char *string, unsigned long long len)
+unsigned long long repetition(char *string, unsigned long long len, unsigned long long n)
 {
+    unsigned long long count, repetition = 1;
     char repeats[30];
-    unsigned long long sum = 0;
-
     int j = 0, m = 0, flag;
 
-    for (int i = 0; i < len; i++)
+    for (unsigned long long i = n; i < len; i++)
     {
+        count = 0; flag = 0;
+
         while (j < m && flag == 0) {
-            if (repeats[j] == string[i])
-            {
+            if (repeats[j] == string[i]) {
                 flag = 1;
             }
             j++;
         }
         j = 0;
-
-        if (flag == 0)
-        {
-            for (int k = i; k < len; k++)
+        if (flag == 0) {
+            for (unsigned long long k = n; k < len ;k++)
             {
-                if(string[i] == string[k])
+                if (string[i] == string[k])
                 {
-                    repetition[i]++;
                     repeats[m] = string[i];
                     m++;
+                    count++;
                 }
             }
         }
-    }
 
-    for (int i = 0; i < m; i++)
-    {
-        sum = 0;
-        for (int k = i; k < m; k++)
-        {
-            if (repetition[k] > 1)
-            {
-                sum += repetition[k];
-            }
-        }
-        if (sum != 0)
-            repetition[i] = sum;
+        repetition *= fac(count);
     }
+    return repetition;
 }
-
-
 
 unsigned long long ranking(char *string)
 {
@@ -94,8 +79,6 @@ unsigned long long ranking(char *string)
     unsigned long long len = strlen(string);
     unsigned long long rank = 1, count, rep;
 
-    unsigned long long repetition[52];
-    determining_repetition(repetition, string, len);
 
     for (unsigned long long i = 0; i < len; i++)
     {
@@ -105,8 +88,8 @@ unsigned long long ranking(char *string)
 
         temp *=  count * fac(len - i - 1);
 
-        if (repetition[i] != 0)
-            temp /= repetition[i];
+
+        temp /= repetition(string, len, i);
 
         rank += temp;
     }
@@ -169,7 +152,6 @@ graphic(double *times, int count)
     }
 
 }
-
 
 int main() {
     int i, count = 0;
