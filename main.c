@@ -1,8 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <strings.h>
 #include <time.h>
 
+void entering_word (char *string)
+{
+    printf("Please enter the word.\n");
+    scanf("%s",string);
+}
+void printing_word (char *string)
+{
+    printf("You have entered word %s \n",string);
+}
 
 unsigned long long fac(unsigned long long n)
 {
@@ -17,7 +26,7 @@ unsigned long long fac(unsigned long long n)
     }
 }
 
-unsigned long long greater_than(char string[5000], unsigned long long n, unsigned long long len)
+unsigned long long greater_than(char *string, unsigned long long n, unsigned long long len)
 {
     unsigned long long count = 0;
     for (unsigned long long i = n + 1; i <= len; i++)
@@ -32,6 +41,7 @@ unsigned long long greater_than(char string[5000], unsigned long long n, unsigne
 
 unsigned long long repetition(char *string, unsigned long long len, unsigned long long n)
 {
+
     unsigned long long count, repetition = 1;
     char repeats[30];
     int j = 0, m = 0, flag;
@@ -41,13 +51,15 @@ unsigned long long repetition(char *string, unsigned long long len, unsigned lon
         count = 0; flag = 0;
 
         while (j < m && flag == 0) {
-            if (repeats[j] == string[i]) {
+            if (repeats[j] == string[i])
+            {
                 flag = 1;
             }
             j++;
         }
         j = 0;
         if (flag == 0) {
+
             for (unsigned long long k = n; k < len ;k++)
             {
                 if (string[i] == string[k])
@@ -66,11 +78,13 @@ unsigned long long repetition(char *string, unsigned long long len, unsigned lon
 
 }
 
-unsigned long long ranking(char string[5000])
+unsigned long long ranking(char *string)
 {
+
+
+
     unsigned long long len = strlen(string);
     unsigned long long rank = 1, count, rep;
-
 
     for (unsigned long long i = 0; i < len; i++)
     {
@@ -86,18 +100,62 @@ unsigned long long ranking(char string[5000])
     return rank;
 }
 
-
-
-int main()
+void lexicographic_rank (double *times, int count)
 {
-    clock_t begin = clock();
-    char string[500000];
+    char string[5000];
+    unsigned long long rank;
 
-    printf("Please enter the string. \n");
-    scanf("%s", string);
-    printf("Rank of your word is %llu\n", ranking(string));
+
+    entering_word(string);
+    printing_word(string);
+
+    clock_t begin = clock();
+
+    rank = ranking(string);
+    for (int i = 0; i < 99999; i++)
+    {
+        ranking(string);
+    }
 
     clock_t end = clock();
+
+    printf("\n");
+    printf("Rank of your word is %llu\n", rank);
+
+
+
     double time_sp = (double)(end - begin);
-    printf("For a %llu index array program has been executed in %lf miliseconds.",strlen(string), time_sp);
+    time_sp /= 100000;
+    times[count] = time_sp;
+
+    printf("This program executed for %llu indexed array on average %lf miliseconds.\n", strlen(string), time_sp);
+
+}
+
+
+
+int main() {
+    int i, count = 0;
+    double times[5000];
+
+    do {
+        count++;
+
+        printf("---------------------------------\n");
+        lexicographic_rank(times, count);
+        printf("---------------------------------\n");
+
+
+        printf(" For exiting the program please enter -1 \n For resuming enter the word. \n");
+        scanf("%d", &i);
+
+    }while(i != -1);
+
+
+
+
+
+
+
+    return 0;
 }
